@@ -3,11 +3,11 @@ let env = 'Dev';
 // {
 //     "WorkCase History Service Http": {
 //                                       "Asset ID": "workcase-history-service-http",
-//                                       "Instance ID": 16536594,
+//                                       "Instance ID": 123456,
 //                                       "Asset Version": "1.0.0",
 //                                       "Exchange Asset Name": ,
 //                                       "Product Version": "v1",
-//                                       "Instance Label": "16505489",
+//                                       "Instance Label": "78987654",
 //                                       "Deprecated": "N",
 //                                       "Public": "N"
 //                                       }
