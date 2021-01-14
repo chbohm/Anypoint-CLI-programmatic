@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "api": "node node_modules/anypoint-cli/src/app.js --environment pepe",
-    "mine": "node  index.js"
+    "original": "node node_modules/anypoint-cli/src/app.js --environment Dev",
+    "start": "node  index.js"
   },
   "author": "",
   "license": "ISC",
