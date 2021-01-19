@@ -25,20 +25,7 @@ let envs = {
 module.exports.envs = envs;
 
 
-// {
-//     "WorkCase History Service Http": {
-//                                       "Asset ID": "workcase-history-service-http",
-//                                       "Instance ID": 123456,
-//                                       "Asset Version": "1.0.0",
-//                                       "Exchange Asset Name": ,
-//                                       "Product Version": "v1",
-//                                       "Instance Label": "78987654",
-//                                       "Deprecated": "N",
-//                                       "Public": "N"
-//                                       }
-//     ...
-// }
-let nameToApiMap = {};
+
 
 async function login(username, password) {
     return new Promise((resolve, reject) => {
@@ -98,20 +85,6 @@ async function run(env, command) {
 
 }
 
-
-
-async function getId(exchangeName) {
-    return nameToApiMap[exchangeName]['Instance ID']
-}
-module.exports.getId = getId;
-
-async function updateAssetVersion(apiInstanceId, assetVersion, env) {
-    createCommand(env, ['api-mgr', 'api', 'change-specification', '-o', , '\'json\'', apiInstanceId, assetVersion]);
-    await run();
-}
-module.exports.updateAssetVersion = updateAssetVersion;
-
-
 async function listApis(env) {
     return await run(env, 'api-mgr api list --limit 1000 -o json');
 }
@@ -153,6 +126,11 @@ async function listPolicies(apiInstanceId) {
     return JSON.parse(result);
 }
 
+async function changeSpecification(env, apiInstanceId, assetVersion) {
+    let result = await run(env, `api-mgr api change-specification -o json ${apiInstanceId} ${assetVersion}`);
+    console.log(result);
+}
+module.exports.changeSpecification = changeSpecification;
 
 
 
