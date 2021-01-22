@@ -1,43 +1,11 @@
 {
-    "environments": {
-        "Test01": {
-		    "config": {
-				"id": "1",
-				"runtimeUrl": "<url>",
-				"jwksUrl": "<url>",
-				"restServiceHost": "<host1>",
-				"httpSericeHost": "<host2>",
-				"deployServerId": 0,
-				"tlsContexts": {
-					"inbound": {
-						"tlsContextId": "<id>",
-						"name": "<name>",
-						"secretGroupId": "<group>"
-					},
-					"outbound": null
-				}
-			},
-            "proxies": {
-                "<name>": {
-				    "type": "rest",
-                    "proxyPath": "<path>",
-					"port":324
-                },
-                "<name2>": {
-				    "type": "http",
-                    "proxyPath": "<path>"
-                }
-
-            }
-        },
-    },
     "templates": {
         "jwtPolicy": {
             "origin": "",
             "signinMethod": "RSA"
         },
         "proxy": {
-            "__DEFAULT__": {
+            "base": {
                 "deploymentType": "HY",
                 "isCloudHub": false,
                 "muleVersion4OrAbove": true,
@@ -50,6 +18,58 @@
             },
             "http": {
                 "proxyTemplateVersion": "1.1.3"
+            }
+        }
+    },
+    "proxies": {
+        "<name1>": {  "type": "rest",  "proxyPath": "<path>",  "port": 0   },
+        "<name2>": {   "type": "http",    "proxyPath": "<path>"   }
+    },
+    "environments": {
+        "<env1>": {
+            "config": {
+                "runtimeUrl": "",
+                "jwksUrl": "",
+                "restServiceHost": "",
+                "httpSericeHost": "",
+                "deployServerId": 23423,
+                "tlsContexts": {
+                    "inbound": {
+                        "tlsContextId": "",
+                        "name": "",
+                        "secretGroupId": ""
+                    },
+                    "outbound": null
+                }
+            },
+            "proxies": {
+                "<name1>": {},
+                "<name2>": {
+                    "implementationUri": "http://yahoo.com"
+                }
+            }
+        },
+        "<env2>": {
+            "config": {
+                "runtimeUrl": "",
+                "jwksUrl": "",
+                "restServiceHost": "",
+                "httpSericeHost": "",
+                "deployServerId": 23423,
+                "tlsContexts": {
+                    "inbound": {
+                        "tlsContextId": "",
+                        "name": "",
+                        "secretGroupId": ""
+                    },
+                    "outbound": null
+                }
+            },
+            "proxies": {
+                "<name1>": {},
+                "<name2>": {
+                    "implementationUri": "http://yahoo.com"
+                }
             }
         }
     }
