@@ -1,0 +1,56 @@
+{
+    "environments": {
+        "Test01": {
+		    "config": {
+				"id": "1",
+				"runtimeUrl": "<url>",
+				"jwksUrl": "<url>",
+				"restServiceHost": "<host1>",
+				"httpSericeHost": "<host2>",
+				"deployServerId": 0,
+				"tlsContexts": {
+					"inbound": {
+						"tlsContextId": "<id>",
+						"name": "<name>",
+						"secretGroupId": "<group>"
+					},
+					"outbound": null
+				}
+			},
+            "proxies": {
+                "<name>": {
+				    "type": "rest",
+                    "proxyPath": "<path>",
+					"port":324
+                },
+                "<name2>": {
+				    "type": "http",
+                    "proxyPath": "<path>"
+                }
+
+            }
+        },
+    },
+    "templates": {
+        "jwtPolicy": {
+            "origin": "",
+            "signinMethod": "RSA"
+        },
+        "proxy": {
+            "__DEFAULT__": {
+                "deploymentType": "HY",
+                "isCloudHub": false,
+                "muleVersion4OrAbove": true,
+                "referencesUserDomain": true,
+                "responseTimeout": 10000,
+                "validation": "NOT_APPLICABLE"
+            },
+            "rest": {
+                "proxyTemplateVersion": "2.1.0"
+            },
+            "http": {
+                "proxyTemplateVersion": "1.1.3"
+            }
+        }
+    }
+}
