@@ -19,7 +19,16 @@ let envs = {
     },
     'Test05': {
         'target': 2190942
+    },
+    'Test06': {
+        'id': 'c694f7e1-9138-4376-9660-6f43dc1524d0',
+        'jwtUrl': 'LVATHT06AP',
+        'target': 2190943
+    },
+    'Test09': {
+        'target': 2190951
     }
+
 }
 
 module.exports.envs = envs;
@@ -104,7 +113,7 @@ async function deployApi(apiInstanceId) {
 }
 module.exports.deployApi = deployApi;
 
-async function redeploy(apiInstanceId, path) {
+async function redeploy(env, apiInstanceId) {
     let result = await run(`api-mgr api redeploy -o json --target ${envs[env].target} ${apiInstanceId}`);
     return JSON.parse(result);
 }
@@ -131,6 +140,77 @@ async function changeSpecification(env, apiInstanceId, assetVersion) {
     console.log(result);
 }
 module.exports.changeSpecification = changeSpecification;
+
+
+function getJwtPolicy(env) {
+    return {
+        "policyId": null,
+        "policyTemplateId": "299253",
+        "groupId": "68ef9520-24e9-4cf2-b2f5-620025690913",
+        "assetId": "jwt-validation",
+        "assetVersion": "1.1.3",
+        "order": 1,
+        "pointcutData": [
+           {
+              "methodRegex": "GET|POST|PUT|PATCH|DELETE|OPTIONS|HEAD|TRACE|CONNECT",
+              "uriTemplateRegex": "^((?!/api/v1/health).)*$"
+           }
+        ],
+        "type": "system",
+        "version": 1578421869332,
+        "configurationData": 
+        {
+           "jwtOrigin": "httpBearerAuthenticationHeader",
+           "jwtExpression": "#[attributes.headers['jwt']]",
+           "signingMethod": "rsa",
+           "signingKeyLength": 256,
+           "jwtKeyOrigin": "jwks",
+           "textKey": "your-(256|384|512)-bit-secret",
+           "jwksUrl": `https://${envs[env].jwtUrl}/oauth/.well-known/openid-configuration/jwks`,
+           "jwksServiceTimeToLive": 60,
+           "skipClientIdValidation": true,
+           "clientIdExpression": "#[vars.claimSet.client_id]",
+           "validateAudClaim": false,
+           "mandatoryAudClaim": false,
+           "supportedAudiences": "aud.example.com",
+           "mandatoryExpClaim": false,
+           "mandatoryNbfClaim": false,
+           "validateCustomClaim": false
+        }
+     }
+}
+
+async function applyJwtPolicy(env, instanceId) {
+    if (!token) {
+        token = await login(credentials.username, credentials.password);
+    }
+
+    return new Promise((resolve, reject) => {
+        let defaults = {
+            timeout: 60000,
+            baseUrl: 'https://anypoint.mulesoft.com',
+            strictSSL: false,
+            json: true
+        }
+        let request = require('request-promise');
+        requester = request.defaults(defaults);
+        let options = {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            url: `/apimanager/api/v1/organizations/35948028-ba40-4ccc-bf9d-7a25bc819004/environments/${envs[env].id}/apis/${instanceId}/policies`,
+            body: getJwtPolicy(env)
+        };
+
+        requester.post(options).then((body) => {
+            resolve(body);
+        }).catch((error) => { reject(error) })
+    });
+}
+module.exports.applyJwtPolicy = applyJwtPolicy;
+
 
 
 
